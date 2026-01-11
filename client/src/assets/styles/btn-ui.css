@@ -1,0 +1,65 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+
+.default {
+  background: #000;
+  color: #fff;
+}
+
+.destructive {
+  background: #dc2626;
+  color: #fff;
+}
+
+.outline {
+  background: transparent;
+  border: 1px solid #000;
+  color: #000;
+}
+
+.secondary {
+  background: #e5e7eb;
+  color: #111;
+}
+
+.ghost {
+  background: transparent;
+  color: #111;
+}
+
+.link {
+  background: none;
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.size-default {
+  height: 40px;
+  padding: 0 16px;
+}
+
+.size-sm {
+  height: 32px;
+  padding: 0 12px;
+}
+
+.size-lg {
+  height: 48px;
+  padding: 0 24px;
+}
+
+.size-icon {
+  height: 40px;
+  width: 40px;
+  padding: 0;
+}

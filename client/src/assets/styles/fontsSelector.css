@@ -1,0 +1,18 @@
+.font-selector {
+  display: flex;
+  gap: 0.5rem;
+
+  select {
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    background-color: #fff;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+  }
+}

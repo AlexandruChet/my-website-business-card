@@ -1,5 +1,11 @@
+import WriteLetter from "../components/WriteLetter";
+
 const Letter = () => {
-  return<></>
+  return(
+    <>
+    <WriteLetter/>
+    </>
+  )
 }
 
 export default Letter;
