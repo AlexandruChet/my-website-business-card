@@ -1,0 +1,163 @@
+
+.write-letter {
+  max-width: 820px;
+  margin: 40px auto;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.letter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.from {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #d1d5db;
+}
+
+.email {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+}
+
+.window-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.window-actions button {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  color: #6b7280;
+}
+
+.window-actions button:hover {
+  color: #111827;
+}
+
+.subject {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.subject h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.counter {
+  font-size: 13px;
+  padding: 4px 10px;
+  background: #f3f4f6;
+  border-radius: 999px;
+  color: #6b7280;
+}
+
+.toolbar {
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.editor {
+  padding: 24px 20px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #111827;
+}
+
+.editor p {
+  margin: 0 0 16px;
+}
+
+.mention {
+  background: #ffedd5;
+  color: #9a3412;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.link {
+  color: #2563eb;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.highlight {
+  background: #e0f2fe;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.attachment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-top: 1px solid #e5e7eb;
+  background: #fafafa;
+}
+
+.file {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.file-icon {
+  font-size: 24px;
+}
+
+.file-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+}
+
+.file-size {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.letter-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.footer-left,
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
