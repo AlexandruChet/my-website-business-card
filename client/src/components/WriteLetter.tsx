@@ -1,4 +1,4 @@
-import { type FC, useEffect } from "react";
+import { type FC, useEffect, useState, ChangeEvent } from "react";
 import Toolbar from "../ui/toolbar/toolbarUI";
 import FontSelector from "../ui/fontSelector/FontSelector";
 import { Button } from "../ui/button/btn_ui";
@@ -6,13 +6,38 @@ import "../assets/styles/write-letter.css";
 import useWindowState from "../hooks/VisibleHook";
 
 const WriteLetter: FC = () => {
-  const {
-    isVisible,
-    isMinimized,
-    open,
-    close,
-    toggleMinimize,
-  } = useWindowState();
+  const [text, setText] = useState<string>("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [fileSizeText, setFileSizeText] = useState<string>("");
+
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setText(event.target.value);
+  };
+
+  const handleClear = () => setText("");
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setSelectedFile(file);
+
+    if (!file) {
+      setFileSizeText("");
+      return;
+    }
+
+    const bytes = file.size;
+
+    if (bytes < 1024) {
+      setFileSizeText(`${bytes} B`);
+    } else if (bytes < 1024 * 1024) {
+      setFileSizeText(`${(bytes / 1024).toFixed(2)} KB`);
+    } else {
+      setFileSizeText(`${(bytes / (1024 * 1024)).toFixed(2)} MB`);
+    }
+  };
+
+  const { isVisible, isMinimized, open, close, toggleMinimize } =
+    useWindowState();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -59,16 +84,30 @@ const WriteLetter: FC = () => {
           <Toolbar gap="0.25rem">
             <FontSelector />
 
-            <Button variant="ghost" size="icon">B</Button>
-            <Button variant="ghost" size="icon">I</Button>
-            <Button variant="ghost" size="icon">U</Button>
-            <Button variant="ghost" size="icon">S</Button>
-            <Button variant="ghost" size="icon">🔗</Button>
-            <Button variant="ghost" size="icon">⋯</Button>
+            <Button variant="ghost" size="icon">
+              B
+            </Button>
+            <Button variant="ghost" size="icon">
+              I
+            </Button>
+            <Button variant="ghost" size="icon">
+              U
+            </Button>
+            <Button variant="ghost" size="icon">
+              S
+            </Button>
+            <Button variant="ghost" size="icon">
+              🔗
+            </Button>
+            <Button variant="ghost" size="icon">
+              ⋯
+            </Button>
           </Toolbar>
 
           <div className="editor">
             <textarea
+              value={text}
+              onChange={handleChange}
               className="editor-textarea"
               placeholder="Write your message here..."
             />
@@ -79,19 +118,40 @@ const WriteLetter: FC = () => {
               <span className="file-icon">🎨</span>
               <div>
                 <div className="file-name">No file attached</div>
-                <div className="file-size">—</div>
+                <div className="file-size">—{fileSizeText}</div>
+                <div>
+                  <input
+                    type="file"
+                    hidden
+                    id="fileInput"
+                    accept=".pdf,.doc,.docx"
+                    onChange={handleFileChange}
+                  />
+
+                  <label
+                    htmlFor="fileInput"
+                  >
+                    Select file
+                  </label>
+                  {selectedFile ? (
+                    <p>File Selected: {selectedFile.name}</p>
+                  ) : (
+                    <p>File not selected</p>
+                  )}
+                </div>
               </div>
             </div>
 
-            <Button variant="secondary" size="sm">
-              Attach file
-            </Button>
           </div>
 
           <div className="letter-footer">
             <div className="footer-left">
-              <Button variant="ghost" size="icon">🗑</Button>
-              <Button variant="ghost" size="icon">⋮</Button>
+              <Button variant="ghost" size="icon" onClick={handleClear}>
+                🗑
+              </Button>
+              <Button variant="ghost" size="icon">
+                ⋮
+              </Button>
             </div>
 
             <div className="footer-right">
