@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
 
-const STATIC_PATH = path.resolve("client/dist");
+const STATIC_PATH = path.resolve("../../client/dist");
 
 const toBool = [(): boolean => true, (): boolean => false];
 
