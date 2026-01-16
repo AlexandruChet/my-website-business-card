@@ -1,4 +1,4 @@
-import { type FC, useEffect, useState, useRef } from "react";
+import React, { type FC, useEffect, useState, useRef } from "react";
 import Toolbar from "../ui/toolbar/toolbarUI";
 import FontSelector from "../ui/fontSelector/FontSelector";
 import { Button } from "../ui/button/btn_ui";
@@ -30,14 +30,51 @@ const WriteLetter: FC = () => {
 
   const handleClear = () => setText("");
 
-  const handleBold = (e: React.MouseEvent) => {
-    e.preventDefault();
-    document.execCommand("bold", false);
+  const execCommand = (
+    command: string,
+    value?: string | null,
+    e?: React.MouseEvent,
+  ) => {
+    e?.preventDefault();
+    if (value != null) document.execCommand(command, false, value);
+    else document.execCommand(command, false);
   };
 
-  const handleNormal = (e: React.MouseEvent) => {
-    e.preventDefault();
-    document.execCommand("removeFormat", false);
+  const handleBold = (e: React.MouseEvent) => execCommand("bold", undefined, e);
+  const handleNormal = (e: React.MouseEvent) =>
+    execCommand("removeFormat", undefined, e);
+  const handleUnderline = (e: React.MouseEvent) =>
+    execCommand("underline", undefined, e);
+  const handleStrikeThrough = (e: React.MouseEvent) =>
+    execCommand("strikeThrough", undefined, e);
+
+  const handleAddLink = () => {
+    const url = prompt("Enter URL:");
+    if (url) execCommand("createLink", url);
+  };
+
+  const handleHighlight = () => {
+    const color = prompt("Enter highlight color (yellow, #ff0):", "yellow");
+    if (color) execCommand("backColor", color);
+  };
+
+  const handleAlign = () => {
+    const align = prompt("Align text: left, center, right, justify", "left") as
+      | "left"
+      | "center"
+      | "right"
+      | "justify"
+      | null;
+    if (!align) return;
+
+    const commands: Record<"left" | "center" | "right" | "justify", string> = {
+      left: "justifyLeft",
+      center: "justifyCenter",
+      right: "justifyRight",
+      justify: "justifyFull",
+    };
+
+    execCommand(commands[align]);
   };
 
   const { isVisible, isMinimized, open, close, toggleMinimize } =
@@ -93,17 +130,31 @@ const WriteLetter: FC = () => {
             <Button variant="ghost" size="icon" onMouseDown={handleNormal}>
               I
             </Button>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" onMouseDown={handleUnderline}>
               U
             </Button>
-            <Button variant="ghost" size="icon">
+            <Button
+              variant="ghost"
+              size="icon"
+              onMouseDown={handleStrikeThrough}
+            >
               S
             </Button>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" onMouseDown={handleAddLink}>
               🔗
             </Button>
-            <Button variant="ghost" size="icon">
-              ⋯
+            <Button variant="ghost" size="icon" onMouseDown={handleHighlight}>
+              col. back.
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                handleAlign();
+              }}
+            >
+              ⬅️
             </Button>
           </Toolbar>
 
