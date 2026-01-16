@@ -10,6 +10,7 @@ const WriteLetter: FC = () => {
   const [text, setText] = useState<string>("");
   const [fontFamily, setFontFamily] = useState<string>("Inter");
   const [fontSize, setFontSize] = useState<number>(15);
+  const [subject, setSubject] = useState<string>("");
 
   const {
     file: selectedFile,
@@ -66,8 +67,10 @@ const WriteLetter: FC = () => {
               className="subject-input"
               placeholder="from whom"
               type="text"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
             />
-            <span className="counter">0</span>
+            <span className="counter">{subject.length} / 100</span>
           </div>
 
           <Toolbar gap="0.25rem">

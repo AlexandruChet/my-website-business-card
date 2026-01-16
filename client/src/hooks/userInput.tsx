@@ -11,9 +11,7 @@ const formatFileSize = (bytes: number): string => {
   return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 };
 
-export const useFileInput = (
-  options: UseFileInputOptions = {}
-) => {
+export const useFileInput = (options: UseFileInputOptions = {}) => {
   const { allowedTypes, maxSizeMB } = options;
 
   const [file, setFile] = useState<File | null>(null);
@@ -30,18 +28,12 @@ export const useFileInput = (
       return;
     }
 
-    if (
-      allowedTypes &&
-      !allowedTypes.includes(selectedFile.type)
-    ) {
+    if (allowedTypes && !allowedTypes.includes(selectedFile.type)) {
       setError("Invalid file type");
       return;
     }
 
-    if (
-      maxSizeMB &&
-      selectedFile.size > maxSizeMB * 1024 * 1024
-    ) {
+    if (maxSizeMB && selectedFile.size > maxSizeMB * 1024 * 1024) {
       setError(`File must be smaller than ${maxSizeMB}MB`);
       return;
     }
