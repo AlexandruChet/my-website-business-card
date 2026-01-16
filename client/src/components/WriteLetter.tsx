@@ -1,4 +1,4 @@
-import { type FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState, useRef } from "react";
 import Toolbar from "../ui/toolbar/toolbarUI";
 import FontSelector from "../ui/fontSelector/FontSelector";
 import { Button } from "../ui/button/btn_ui";
@@ -7,10 +7,11 @@ import useWindowState from "../hooks/VisibleHook";
 import { useFileInput } from "../hooks/userInput";
 
 const WriteLetter: FC = () => {
-  const [text, setText] = useState<string>("");
+  const [_, setText] = useState<string>("");
   const [fontFamily, setFontFamily] = useState<string>("Inter");
   const [fontSize, setFontSize] = useState<number>(15);
   const [subject, setSubject] = useState<string>("");
+  const editorRef = useRef<HTMLDivElement>(null);
 
   const {
     file: selectedFile,
@@ -27,11 +28,17 @@ const WriteLetter: FC = () => {
     maxSizeMB: 5,
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(e.target.value);
+  const handleClear = () => setText("");
+
+  const handleBold = (e: React.MouseEvent) => {
+    e.preventDefault();
+    document.execCommand("bold", false);
   };
 
-  const handleClear = () => setText("");
+  const handleNormal = (e: React.MouseEvent) => {
+    e.preventDefault();
+    document.execCommand("removeFormat", false);
+  };
 
   const { isVisible, isMinimized, open, close, toggleMinimize } =
     useWindowState();
@@ -80,10 +87,10 @@ const WriteLetter: FC = () => {
                 setFontSize(size);
               }}
             />
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" onMouseDown={handleBold}>
               B
             </Button>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" onMouseDown={handleNormal}>
               I
             </Button>
             <Button variant="ghost" size="icon">
@@ -101,15 +108,13 @@ const WriteLetter: FC = () => {
           </Toolbar>
 
           <div className="editor">
-            <textarea
-              value={text}
-              onChange={handleChange}
+            <div
+              ref={editorRef}
+              contentEditable
+              suppressContentEditableWarning={true}
               className="editor-textarea"
-              style={{
-                fontFamily,
-                fontSize: `${fontSize}px`,
-              }}
-            />
+              style={{ fontFamily, fontSize: `${fontSize}px` }}
+            ></div>
           </div>
 
           <div className="attachment">
