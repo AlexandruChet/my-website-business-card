@@ -9,6 +9,8 @@ const WriteLetter: FC = () => {
   const [text, setText] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileSizeText, setFileSizeText] = useState<string>("");
+  const [fontFamily, setFontFamily] = useState<string>("Inter");
+  const [fontSize, setFontSize] = useState<number>(15);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value);
@@ -82,7 +84,12 @@ const WriteLetter: FC = () => {
           </div>
 
           <Toolbar gap="0.25rem">
-            <FontSelector />
+            <FontSelector
+              onFontChange={(family, size) => {
+                setFontFamily(family);
+                setFontSize(size);
+              }}
+            />
 
             <Button variant="ghost" size="icon">
               B
@@ -110,6 +117,10 @@ const WriteLetter: FC = () => {
               onChange={handleChange}
               className="editor-textarea"
               placeholder="Write your message here..."
+              style={{
+                fontFamily: fontFamily,
+                fontSize: `${fontSize}px`,
+              }}
             />
           </div>
 
@@ -128,11 +139,7 @@ const WriteLetter: FC = () => {
                     onChange={handleFileChange}
                   />
 
-                  <label
-                    htmlFor="fileInput"
-                  >
-                    Select file
-                  </label>
+                  <label htmlFor="fileInput">Select file</label>
                   {selectedFile ? (
                     <p>File Selected: {selectedFile.name}</p>
                   ) : (
@@ -141,7 +148,6 @@ const WriteLetter: FC = () => {
                 </div>
               </div>
             </div>
-
           </div>
 
           <div className="letter-footer">
