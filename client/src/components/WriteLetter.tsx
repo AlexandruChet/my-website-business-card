@@ -1,58 +1,46 @@
-import { type FC, useEffect, useState, ChangeEvent } from "react";
+import { type FC, useEffect, useState } from "react";
 import Toolbar from "../ui/toolbar/toolbarUI";
 import FontSelector from "../ui/fontSelector/FontSelector";
 import { Button } from "../ui/button/btn_ui";
 import "../assets/styles/write-letter.css";
 import useWindowState from "../hooks/VisibleHook";
+import { useFileInput } from "../hooks/userInput";
 
 const WriteLetter: FC = () => {
   const [text, setText] = useState<string>("");
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [fileSizeText, setFileSizeText] = useState<string>("");
   const [fontFamily, setFontFamily] = useState<string>("Inter");
   const [fontSize, setFontSize] = useState<number>(15);
 
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(event.target.value);
+  const {
+    file: selectedFile,
+    fileSizeText,
+    error,
+    handleFileChange,
+    clearFile,
+  } = useFileInput({
+    allowedTypes: [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ],
+    maxSizeMB: 5,
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setText(e.target.value);
   };
 
   const handleClear = () => setText("");
-
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    setSelectedFile(file);
-
-    if (!file) {
-      setFileSizeText("");
-      return;
-    }
-
-    const bytes = file.size;
-
-    if (bytes < 1024) {
-      setFileSizeText(`${bytes} B`);
-    } else if (bytes < 1024 * 1024) {
-      setFileSizeText(`${(bytes / 1024).toFixed(2)} KB`);
-    } else {
-      setFileSizeText(`${(bytes / (1024 * 1024)).toFixed(2)} MB`);
-    }
-  };
 
   const { isVisible, isMinimized, open, close, toggleMinimize } =
     useWindowState();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() === "w") {
-        open();
-      }
+      if (e.key.toLowerCase() === "w") open();
     };
-
     window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [open]);
 
   if (!isVisible) return null;
@@ -64,7 +52,6 @@ const WriteLetter: FC = () => {
           <div className="avatar" />
           <span className="email">my-email-address</span>
         </div>
-
         <div className="window-actions">
           <button onClick={toggleMinimize}>—</button>
           <button onClick={toggleMinimize}>▢</button>
@@ -90,7 +77,6 @@ const WriteLetter: FC = () => {
                 setFontSize(size);
               }}
             />
-
             <Button variant="ghost" size="icon">
               B
             </Button>
@@ -116,9 +102,8 @@ const WriteLetter: FC = () => {
               value={text}
               onChange={handleChange}
               className="editor-textarea"
-              placeholder="Write your message here..."
               style={{
-                fontFamily: fontFamily,
+                fontFamily,
                 fontSize: `${fontSize}px`,
               }}
             />
@@ -128,24 +113,26 @@ const WriteLetter: FC = () => {
             <div className="file">
               <span className="file-icon">🎨</span>
               <div>
-                <div className="file-name">No file attached</div>
-                <div className="file-size">—{fileSizeText}</div>
-                <div>
-                  <input
-                    type="file"
-                    hidden
-                    id="fileInput"
-                    accept=".pdf,.doc,.docx"
-                    onChange={handleFileChange}
-                  />
+                <input
+                  type="file"
+                  hidden
+                  id="fileInput"
+                  onChange={handleFileChange}
+                />
+                <label htmlFor="fileInput">Select file</label>
 
-                  <label htmlFor="fileInput">Select file</label>
-                  {selectedFile ? (
-                    <p>File Selected: {selectedFile.name}</p>
-                  ) : (
-                    <p>File not selected</p>
-                  )}
+                <div className="file-name">
+                  {selectedFile ? selectedFile.name : "No file attached"}
                 </div>
+                <div className="file-size">
+                  {fileSizeText && `—${fileSizeText}`}
+                </div>
+                {error && <p className="error">{error}</p>}
+                {selectedFile && (
+                  <Button variant="ghost" size="icon" onClick={clearFile}>
+                    🗑 Clear
+                  </Button>
+                )}
               </div>
             </div>
           </div>
@@ -159,7 +146,6 @@ const WriteLetter: FC = () => {
                 ⋮
               </Button>
             </div>
-
             <div className="footer-right">
               <Button variant="default">Send now ▾</Button>
             </div>
