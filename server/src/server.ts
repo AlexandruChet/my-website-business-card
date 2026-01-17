@@ -4,6 +4,7 @@ import path from "path";
 import fs from "fs";
 import "dotenv/config";
 import apiRouter from "./routes/api";
+import crypto from "crypto";
 
 const app = express();
 app.use(compression());
@@ -22,6 +23,9 @@ const MIME_TYPES: Record<string, string> = {
   svg: "image/svg+xml",
   default: "application/octet-stream",
 };
+
+const generateETag = (size: number, mtime: number) =>
+  crypto.createHash("md5").update(`${size}-${mtime}`).digest("hex");
 
 app.get("/download", (req: Request, res: Response) => {
   const fileName = req.query.file as string;
@@ -54,10 +58,14 @@ const prepareFile = async (url: string) => {
   const resolvedPath = path.resolve(filePath);
 
   if (!resolvedPath.startsWith(STATIC_PATH)) {
+    const indexPath = path.join(STATIC_PATH, "index.html");
+    const stat = await fs.promises.stat(indexPath);
+
     return {
       ext: "html",
-      stream: fs.createReadStream(path.join(STATIC_PATH, "index.html")),
-      size: (await fs.promises.stat(path.join(STATIC_PATH, "index.html"))).size,
+      stream: fs.createReadStream(indexPath),
+      size: stat.size,
+      etag: generateETag(stat.size, stat.mtimeMs),
     };
   }
 
@@ -71,10 +79,11 @@ const prepareFile = async (url: string) => {
     : path.join(STATIC_PATH, "index.html");
 
   const stat = await fs.promises.stat(streamPath);
+  const etag = generateETag(stat.size, stat.mtimeMs);
   const ext = path.extname(streamPath).slice(1).toLowerCase();
   const stream = fs.createReadStream(streamPath);
 
-  return { ext, stream, size: stat.size };
+  return { ext, stream, size: stat.size, etag };
 };
 
 app.use(async (req: Request, res: Response, next: NextFunction) => {
@@ -83,8 +92,19 @@ app.use(async (req: Request, res: Response, next: NextFunction) => {
     const contentType = MIME_TYPES[file.ext] ?? MIME_TYPES.default;
 
     res.setHeader("Content-Type", contentType);
+    res.setHeader("ETag", file.etag);
+
+    const ifNoneMatch = req.headers["if-none-match"];
+    if (typeof ifNoneMatch === "string" && ifNoneMatch === file.etag) {
+      return res.status(304).end();
+    }
+
     file.stream.on("error", next);
     file.stream.pipe(res);
+
+    if (req.headers["if-none-match"] === file.etag) {
+      return res.status(304).end();
+    }
   } catch (err) {
     next(err);
   }
