@@ -14,15 +14,33 @@ app.use((0, compression_1.default)());
 app.use("/api", api_1.default);
 const PORT = process.env.PORT || 3000;
 const STATIC_PATH = path_1.default.resolve("../client/dist");
+const ERROR_FILE = path_1.default.resolve("../../client/dist", "Error.html");
 const MIME_TYPES = {
     html: "text/html; charset=UTF-8",
     css: "text/css",
-    js: "text/javascript",
+    js: "application/javascript",
     json: "application/json",
     png: "image/png",
     svg: "image/svg+xml",
     default: "application/octet-stream",
 };
+app.get("/download", (req, res) => {
+    const fileName = req.query.file;
+    if (!fileName) {
+        return res.status(400).send("File name is required");
+    }
+    const targetPath = path_1.default.resolve(STATIC_PATH, fileName);
+    if (!targetPath.startsWith(STATIC_PATH)) {
+        console.warn(`[SECURITY ALERT] PATH TRAVERSAL attempt!: ${fileName}`);
+        return res.status(403).sendFile(ERROR_FILE);
+    }
+    if (fs_1.default.existsSync(targetPath) && fs_1.default.lstatSync(targetPath).isFile()) {
+        res.sendFile(targetPath);
+    }
+    else {
+        res.status(404).send("File not found");
+    }
+});
 const prepareFile = async (url) => {
     const cleanUrl = url.split("?")[0] || "/";
     const paths = [STATIC_PATH, cleanUrl];
@@ -30,6 +48,13 @@ const prepareFile = async (url) => {
         paths.push("index.html");
     const filePath = path_1.default.join(...paths);
     const resolvedPath = path_1.default.resolve(filePath);
+    if (!resolvedPath.startsWith(STATIC_PATH)) {
+        return {
+            ext: "html",
+            stream: fs_1.default.createReadStream(path_1.default.join(STATIC_PATH, "index.html")),
+            size: (await fs_1.default.promises.stat(path_1.default.join(STATIC_PATH, "index.html"))).size,
+        };
+    }
     const exists = await fs_1.default.promises
         .access(resolvedPath)
         .then(() => true)
@@ -47,7 +72,7 @@ app.use(async (req, res, next) => {
         const file = await prepareFile(req.url);
         const contentType = MIME_TYPES[file.ext] ?? MIME_TYPES.default;
         res.setHeader("Content-Type", contentType);
-        res.setHeader("Content-Length", file.size);
+        file.stream.on("error", next);
         file.stream.pipe(res);
     }
     catch (err) {
