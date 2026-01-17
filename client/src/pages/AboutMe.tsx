@@ -1,5 +1,11 @@
+import AboutMeComponent from "../components/AboutMeComponent";
+
 const AboutMe = () => {
-  return <section></section>;
+  return (
+    <>
+      <AboutMeComponent />
+    </>
+  );
 };
 
 export default AboutMe;

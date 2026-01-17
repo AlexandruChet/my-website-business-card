@@ -1,0 +1,80 @@
+.aboutme-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Fira Code", monospace;
+  color: #ffffff;
+  background-color: #0b0c10;
+  text-align: center;
+}
+
+.typing-svg img {
+  margin-bottom: 20px;
+}
+
+.title {
+  color: #00bfff;
+  font-size: 2.5rem;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  color: #7fdbff;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.divider {
+  border: 1px solid #00bfff;
+  margin: 25px 0;
+}
+
+.about-section ul,
+.achievements ul,
+.goals ul {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.about-section li,
+.achievements li,
+.goals li {
+  margin: 10px 0;
+  font-size: 1.1rem;
+}
+
+.tech-stack img {
+  margin-top: 15px;
+  width: 80%;
+  max-width: 800px;
+}
+
+.projects table {
+  width: 90%;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+.projects th,
+.projects td {
+  border: 1px solid #00bfff;
+  padding: 10px;
+  text-align: center;
+}
+
+.projects a {
+  color: #00bfff;
+  text-decoration: none;
+}
+
+.contact-links a {
+  margin: 0 10px;
+}
+
+.footer {
+  color: #00bfff;
+  margin-top: 30px;
+}
