@@ -7,11 +7,14 @@ import useWindowState from "../hooks/VisibleHook";
 import { useFileInput } from "../hooks/userInput";
 
 const WriteLetter: FC = () => {
-  const [_, setText] = useState<string>("");
   const [fontFamily, setFontFamily] = useState<string>("Inter");
   const [fontSize, setFontSize] = useState<number>(15);
   const [subject, setSubject] = useState<string>("");
   const editorRef = useRef<HTMLDivElement>(null);
+
+  const clearDivContent = () => {
+    if (editorRef.current) editorRef.current.innerHTML = "";
+  };
 
   const {
     file: selectedFile,
@@ -27,8 +30,6 @@ const WriteLetter: FC = () => {
     ],
     maxSizeMB: 5,
   });
-
-  const handleClear = () => setText("");
 
   const execCommand = (
     command: string,
@@ -89,6 +90,36 @@ const WriteLetter: FC = () => {
   }, [open]);
 
   if (!isVisible) return null;
+
+  const handleSend = async () => {
+    if (!editorRef.current) return;
+
+    const formData = new FormData();
+    formData.append("from", subject);
+    formData.append("subject", subject);
+    formData.append("message", editorRef.current.innerHTML);
+
+    if (selectedFile) {
+      formData.append("file", selectedFile);
+    }
+
+    try {
+      const res = await fetch("http://localhost:3000/api/send-letter", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error("Failed to send");
+
+      alert("Letter sent successfully ✅");
+      clearDivContent();
+      setSubject("");
+      clearFile();
+    } catch (err) {
+      console.error(err);
+      alert("Error sending letter ❌");
+    }
+  };
 
   return (
     <div className={`write-letter ${isMinimized ? "minimized" : ""}`}>
@@ -198,15 +229,14 @@ const WriteLetter: FC = () => {
 
           <div className="letter-footer">
             <div className="footer-left">
-              <Button variant="ghost" size="icon" onClick={handleClear}>
+              <Button variant="ghost" size="icon" onClick={clearDivContent}>
                 🗑
-              </Button>
-              <Button variant="ghost" size="icon">
-                ⋮
               </Button>
             </div>
             <div className="footer-right">
-              <Button variant="default">Send now ▾</Button>
+              <Button variant="default" onClick={handleSend}>
+                Send now ▾
+              </Button>
             </div>
           </div>
         </main>

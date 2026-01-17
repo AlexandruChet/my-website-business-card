@@ -8,6 +8,7 @@ import crypto from "crypto";
 
 const app = express();
 app.use(compression());
+app.use(express.json());
 app.use("/api", apiRouter);
 
 const PORT = process.env.PORT || 3000;

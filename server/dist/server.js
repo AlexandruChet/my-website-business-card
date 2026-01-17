@@ -12,6 +12,7 @@ const api_1 = __importDefault(require("./routes/api"));
 const crypto_1 = __importDefault(require("crypto"));
 const app = (0, express_1.default)();
 app.use((0, compression_1.default)());
+app.use(express_1.default.json());
 app.use("/api", api_1.default);
 const PORT = process.env.PORT || 3000;
 const STATIC_PATH = path_1.default.resolve("../client/dist");
