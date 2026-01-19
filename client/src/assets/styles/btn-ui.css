@@ -1,45 +1,94 @@
+
+:root {
+  --btn-radius: 8px;
+  --btn-font-size: 14px;
+  --btn-font-weight: 500;
+  --color-black: #000;
+  --color-white: #fff;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-900: #111827;
+  --color-blue-600: #2563eb;
+  --color-red-600: #dc2626;
+}
+
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
+  gap: 6px;
+
+  border-radius: var(--btn-radius);
+  font-size: var(--btn-font-size);
+  font-weight: var(--btn-font-weight);
+  line-height: 1;
+
   border: none;
-  transition: background 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.05s ease;
 }
 
-
 .default {
-  background: #000;
-  color: #fff;
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+.default:hover {
+  background: #111;
 }
 
 .destructive {
-  background: #dc2626;
-  color: #fff;
+  background: var(--color-red-600);
+  color: var(--color-white);
+}
+
+.destructive:hover {
+  background: #b91c1c;
 }
 
 .outline {
   background: transparent;
-  border: 1px solid #000;
-  color: #000;
+  border: 1px solid var(--color-black);
+  color: var(--color-black);
+}
+
+.outline:hover {
+  background: var(--color-gray-100);
 }
 
 .secondary {
-  background: #e5e7eb;
-  color: #111;
+  background: var(--color-gray-200);
+  color: var(--color-gray-900);
+}
+
+.secondary:hover {
+  background: #d1d5db;
 }
 
 .ghost {
   background: transparent;
-  color: #111;
+  color: var(--color-gray-900);
+}
+
+.ghost:hover {
+  background: var(--color-gray-100);
 }
 
 .link {
   background: none;
-  color: #2563eb;
+  color: var(--color-blue-600);
+  padding: 0;
+}
+
+.link:hover {
   text-decoration: underline;
 }
 
@@ -51,15 +100,32 @@
 .size-sm {
   height: 32px;
   padding: 0 12px;
+  font-size: 13px;
 }
 
 .size-lg {
   height: 48px;
   padding: 0 24px;
+  font-size: 15px;
 }
 
 .size-icon {
   height: 40px;
   width: 40px;
   padding: 0;
+}
+
+.button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-blue-600);
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }

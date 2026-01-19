@@ -3,7 +3,7 @@ import AboutMeComponent from "../components/AboutMeComponent";
 const AboutMe = () => {
   return (
     <>
-      <AboutMeComponent />
+      <AboutMeComponent/>
     </>
   );
 };
