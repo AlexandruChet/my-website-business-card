@@ -6,7 +6,7 @@ const mySkills: React.FC = () => {
     <div className="aboutme-container">
       <div className="typing-svg">
         <img
-          src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=28&pause=1000&color=00BFFF&center=true&vCenter=true&width=850&height=70&lines=Hi%2C+I'm+Alexandru+Chetrean!;14-year-old+Developer+from+Germany;Frontend+%26+Backend+Dev+%7C+Future+C%2B%2B+System+Programmer"
+          src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=28&pause=1000&color=00BFFF&center=true&vCenter=true&width=850&height=70&lines=Hi%2C+I'm+Alexandru+Chetrean!;15-year-old+Developer+from+Germany;Frontend+%26+Backend+Dev+%7C+Future+C%2B%2B+System+Programmer"
           alt="Typing SVG"
         />
       </div>
@@ -20,11 +20,11 @@ const mySkills: React.FC = () => {
       <section className="about-section">
         <h2>👨‍💻 About Me</h2>
         <ul>
-          <li>✨ 14 years old</li>
+          <li>✨ 15 years old</li>
           <li>🌍 Based in Germany</li>
           <li>
             🖥️ Focused on <strong>Frontend & Backend Development</strong> (HTML,
-            CSS, JS, TS, React, Node.js, C++, C)
+            CSS, JS, TS, React, Node.js, basic C++, Python)
           </li>
           <li>
             ⚡ Currently learning <strong>C++</strong> to become a System
@@ -41,7 +41,7 @@ const mySkills: React.FC = () => {
       <section className="tech-stack">
         <h2>🚀 Tech Stack</h2>
         <img
-          src="https://skillicons.dev/icons?i=html,css,sass,js,ts,react,nodejs,cpp,git,github,vscode&perline=7"
+          src="https://skillicons.dev/icons?i=html,css,sass,js,ts,react,nodejs,cpp,python,git,github,vscode&perline=7"
           alt="Tech Stack"
         />
       </section>
@@ -61,7 +61,7 @@ const mySkills: React.FC = () => {
             <tr>
               <td>⚔️ C-RPG</td>
               <td>
-                <a href="https://github.com/AlexandruChet/C-RPG">C-RPG</a>
+                <a href="https://github.com/AlexandruChet/CPP_study">CPP_study</a>
               </td>
             </tr>
             <tr>
@@ -81,15 +81,21 @@ const mySkills: React.FC = () => {
               </td>
             </tr>
             <tr>
-              <td>🎮 Gamers</td>
+              <td>🎮 Gamers Website</td>
               <td>
                 <a href="https://github.com/AlexandruChet/Gamers">Gamers</a>
               </td>
             </tr>
             <tr>
-              <td>🌍 WebSite</td>
+              <td>🌍 beautiful looking WebSite</td>
               <td>
                 <a href="https://github.com/AlexandruChet/WebSite">WebSite</a>
+              </td>
+            </tr>
+            <tr>
+              <td>🎧 Discord Voice Bot</td>
+              <td>
+                <a href="https://github.com/AlexandruChet/DiscordBot">Discord Voice Bot</a>
               </td>
             </tr>
           </tbody>

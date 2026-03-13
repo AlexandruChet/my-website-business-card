@@ -126,7 +126,7 @@ const WriteLetter: FC = () => {
       <div className="letter-header">
         <div className="from">
           <div className="avatar" />
-          <span className="email">my-email-address</span>
+          <span className="email">chetreanalexandru63@gmail.com</span>
         </div>
         <div className="window-actions">
           <button onClick={toggleMinimize}>—</button>

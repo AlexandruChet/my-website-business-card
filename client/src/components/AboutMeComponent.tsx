@@ -6,11 +6,11 @@ const AboutMeComponent = () => {
   const [num, setNum] = useState<number>(0);
 
   const arrayText: string[] = [
-    "I started at 12.",
-    "I am 15 years old.",
-    "Looking for a Junior Frontend - Backend position.",
-    "I know React, TypeScript, Tailwind, C, C++, JavaScript.",
-    "I am currently looking for an internship.",
+    "I started programming at the age of 12.",
+    "I am currently 15 years old.",
+    "I am looking for a Junior Frontend / Backend developer position.",
+    "My main technologies are React, TypeScript, JavaScript, Node.js, Python, C, and C++.",
+    "I am currently open to internship opportunities.",
   ];
 
   return (

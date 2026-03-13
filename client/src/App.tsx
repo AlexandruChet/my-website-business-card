@@ -3,6 +3,7 @@ import { Header } from "./components/Header";
 import AboutMe from "./pages/AboutMe";
 import Skills from "./pages/Skills";
 import Letter from "./pages/Letter";
+import githubImg from "./assets/img/github.png";
 
 const App = () => {
   const navLinks = [
@@ -11,9 +12,15 @@ const App = () => {
     { label: "Letter", to: "/writing_a_letter" },
   ];
 
+  const logo = (
+    <button>
+      <img src={githubImg} alt="GitHub logo" width={40} />
+    </button>
+  );
+
   return (
     <Router>
-      <Header navLinks={navLinks} />
+      <Header logo={logo} navLinks={navLinks} />
       <main>
         <Routes>
           <Route path="/about" element={<AboutMe />} />

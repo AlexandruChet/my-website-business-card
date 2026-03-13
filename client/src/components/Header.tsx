@@ -23,10 +23,12 @@ export const Header: FC<HeaderProps> = ({ logo, navLinks, actions }) => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
-      
+
       if (
-        menuRef.current && !menuRef.current.contains(target) &&
-        burgerWrapperRef.current && !burgerWrapperRef.current.contains(target)
+        menuRef.current &&
+        !menuRef.current.contains(target) &&
+        burgerWrapperRef.current &&
+        !burgerWrapperRef.current.contains(target)
       ) {
         setIsMenuOpen(false);
       }
@@ -43,9 +45,7 @@ export const Header: FC<HeaderProps> = ({ logo, navLinks, actions }) => {
 
   return (
     <header className="header">
-      <div className="header__logo">
-        {logo || <Link to="/">Logo</Link>}
-      </div>
+      <div className="header__logo">{logo || <Link to="/">Logo</Link>}</div>
 
       <nav className="header__nav header__nav--desktop">
         <ul>

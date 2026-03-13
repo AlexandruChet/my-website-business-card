@@ -1,15 +1,19 @@
-
 :root {
-  --btn-radius: 8px;
+  --btn-radius: 10px;
   --btn-font-size: 14px;
   --btn-font-weight: 500;
   --color-black: #000;
   --color-white: #fff;
   --color-gray-100: #f3f4f6;
   --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
   --color-gray-900: #111827;
   --color-blue-600: #2563eb;
   --color-red-600: #dc2626;
+  --color-red-700: #b91c1c;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 10px rgba(0,0,0,0.12);
 }
 
 .button {
@@ -17,23 +21,21 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-
+  border: none;
   border-radius: var(--btn-radius);
   font-size: var(--btn-font-size);
   font-weight: var(--btn-font-weight);
   line-height: 1;
-
-  border: none;
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
-
+  box-shadow: var(--shadow-sm);
   transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.05s ease;
+    background-color .2s ease,
+    color .2s ease,
+    border-color .2s ease,
+    box-shadow .2s ease,
+    transform .08s ease;
 }
 
 .default {
@@ -43,6 +45,7 @@
 
 .default:hover {
   background: #111;
+  box-shadow: var(--shadow-md);
 }
 
 .destructive {
@@ -51,17 +54,19 @@
 }
 
 .destructive:hover {
-  background: #b91c1c;
+  background: var(--color-red-700);
+  box-shadow: var(--shadow-md);
 }
 
 .outline {
-  background: transparent;
-  border: 1px solid var(--color-black);
-  color: var(--color-black);
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-300);
+  color: var(--color-gray-900);
 }
 
 .outline:hover {
   background: var(--color-gray-100);
+  border-color: var(--color-gray-400);
 }
 
 .secondary {
@@ -70,22 +75,33 @@
 }
 
 .secondary:hover {
-  background: #d1d5db;
+  background: var(--color-gray-300);
+  box-shadow: var(--shadow-md);
+}
+
+.secondary:active {
+  background: var(--color-gray-200);
 }
 
 .ghost {
   background: transparent;
   color: var(--color-gray-900);
+  box-shadow: none;
 }
 
 .ghost:hover {
   background: var(--color-gray-100);
 }
 
+.ghost:active {
+  background: var(--color-gray-200);
+}
+
 .link {
   background: none;
-  color: var(--color-blue-600);
   padding: 0;
+  color: var(--color-blue-600);
+  box-shadow: none;
 }
 
 .link:hover {
@@ -110,22 +126,25 @@
 }
 
 .size-icon {
-  height: 40px;
   width: 40px;
+  height: 40px;
   padding: 0;
 }
 
 .button:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--color-blue-600);
+  box-shadow:
+    0 0 0 2px white,
+    0 0 0 4px var(--color-blue-600);
 }
 
 .button:active {
-  transform: translateY(1px);
+  transform: translateY(1px) scale(0.98);
 }
 
 .button:disabled {
-  opacity: 0.5;
+  opacity: .5;
   cursor: not-allowed;
   pointer-events: none;
+  box-shadow: none;
 }
