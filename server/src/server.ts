@@ -1,8 +1,8 @@
+import "dotenv/config";
 import express, { Request, Response, NextFunction } from "express";
 import compression from "compression";
 import path from "path";
 import fs from "fs";
-import "dotenv/config";
 import apiRouter from "./routes/api";
 import crypto from "crypto";
 

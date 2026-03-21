@@ -1,7 +1,9 @@
+import "dotenv/config";
 import { Router, Request, Response } from "express";
 import fs from "fs/promises";
 import path from "path";
 import multer from "multer";
+import nodemailer from "nodemailer";
 
 interface MulterRequest extends Request {
   file?: Express.Multer.File;
@@ -13,6 +15,14 @@ const LETTERS_FILE = path.join(DATA_DIR, "letters.json");
 const UPLOAD_DIR = path.join(DATA_DIR, "uploads");
 
 const apiRouter = Router();
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+})
 
 const ensureDataFoldersExist = async () => {
   await fs.mkdir(DATA_DIR, { recursive: true });
@@ -49,18 +59,13 @@ const saveLetterToFile = async (letter: {
   await fs.writeFile(LETTERS_FILE, JSON.stringify(letters, null, 2), "utf-8");
 };
 
-apiRouter.post("/send-letter", async (req: MulterRequest, res: Response, next) => {
+apiRouter.post("/send-letter", async (req: Request, res: Response, next) => {
   try {
     await ensureDataFoldersExist();
-
     const uploadHandler = upload.single("file");
 
     uploadHandler(req, res, async (err: any) => {
       if (err) return next(err);
-
-      console.log("/send-letter");
-      console.log("BODY:", req.body);
-      console.log("FILE:", req.file?.originalname);
 
       const { from, subject, message } = req.body;
 
@@ -76,10 +81,31 @@ apiRouter.post("/send-letter", async (req: MulterRequest, res: Response, next) =
           file: req.file?.filename,
         });
 
-        return res.status(200).json({ success: true });
+        const mailOptions = {
+          from: process.env.EMAIL_USER,
+          to: "my__email",
+          subject: `New letter: ${subject || "No topic"}`,
+          html: `
+            <h3>Letter from: ${from}</h3>
+            <div>
+              ${message}
+            </div>
+          `,
+          attachments: req.file ? [
+            {
+              filename: req.file.originalname,
+              path: req.file.path,
+            }
+          ] : []
+        };
+
+        await transporter.sendMail(mailOptions);
+
+        return res.status(200).json({ success: true, sent: true });
+
       } catch (err) {
-        console.error("SAVE ERROR:", err);
-        return res.status(500).json({ error: "Failed to save letter" });
+        console.error("PROCESS ERROR:", err);
+        return res.status(500).json({ error: "Failed to process letter or email" });
       }
     });
   } catch (err) {

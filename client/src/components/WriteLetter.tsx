@@ -111,13 +111,13 @@ const WriteLetter: FC = () => {
 
       if (!res.ok) throw new Error("Failed to send");
 
-      alert("Letter sent successfully ✅");
+      alert("Letter sent successfully");
       clearDivContent();
       setSubject("");
       clearFile();
     } catch (err) {
       console.error(err);
-      alert("Error sending letter ❌");
+      alert("Error sending letter");
     }
   };
 
@@ -126,7 +126,7 @@ const WriteLetter: FC = () => {
       <div className="letter-header">
         <div className="from">
           <div className="avatar" />
-          <span className="email">chetreanalexandru63@gmail.com</span>
+          <span className="email">my__email</span>
         </div>
         <div className="window-actions">
           <button onClick={toggleMinimize}>—</button>
